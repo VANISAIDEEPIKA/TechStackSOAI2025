@@ -1,0 +1,99 @@
+import subprocess
+import sys
+import shutil
+
+def run_command(command, check=True):
+    print(f"👉 Running: {command}")
+    result = subprocess.run(command, shell=True)
+    if check and result.returncode != 0:
+        print(f"❌ Command failed: {command}")
+        sys.exit(1)
+    return result.returncode == 0
+
+def check_git():
+    print("🔍 Checking Git...")
+    result = subprocess.run("git --version", capture_output=True, text=True)
+    if "git version" in result.stdout:
+        version = result.stdout.strip().split()[-1]
+        print(f"✅ Git installed: {version}")
+    else:
+        print("❌ Git not found. Please install Git from https://git-scm.com/")
+        sys.exit(1)
+
+def check_python():
+    print("🐍 Checking Python version...")
+    version = sys.version_info
+    if version.major == 3 and version.minor >= 11:
+        print(f"✅ Python version OK: {version.major}.{version.minor}")
+    else:
+        print("❌ Python 3.11+ required.")
+        sys.exit(1)
+
+def check_uv():
+    print("🔍 Checking UV tool...")
+    if not is_installed("uv"):
+        print("❌ UV is not installed.")
+        print("📦 Install UV via pip: pip install uv")
+        sys.exit(1)
+    else:
+        print("✅ UV is installed.")
+
+def is_installed(command):
+    return shutil.which(command) is not None
+
+def install_vs_code():
+    if is_installed("code"):
+        print("✅ VS Code already installed.")
+    else:
+        print("⬇️ Installing VS Code using winget...")
+        run_command('winget install --id Microsoft.VisualStudioCode -e --source winget')
+
+def install_python_packages():
+    packages = ["numpy", "pandas", "streamlit", "jupyterlab", "ruff"]
+    for pkg in packages:
+        print(f"📦 Installing {pkg} via uv")
+        run_command(f"uv pip install --upgrade {pkg} --system")
+
+def install_ruff_extension():
+    print("🧩 Installing Ruff VS Code extension...")
+    if is_installed("code"):
+        run_command("code --install-extension charliermarsh.ruff")
+        print("✅ Ruff extension installed in VS Code!")
+    else:
+        print("⚠️ VS Code CLI not available. Please install Ruff manually from the VS Code Marketplace.")
+
+def test_streamlit():
+    print("🧪 Testing Streamlit...")
+    run_command("streamlit hello", check=False)
+    print("✅ Streamlit launched! Check your browser.")
+
+def test_jupyterlab():
+    print("🧪 Testing JupyterLab...")
+    run_command("jupyter lab", check=False)
+    print("✅ JupyterLab launched in browser!")
+
+def main():
+    print("=== 🌟 Full Dev Setup Script - Summer of AI 2025 ===")
+
+    # Step 1: Environment checks
+    check_git()
+    check_python()
+    check_uv()
+
+    # Step 2: VS Code install
+    install_vs_code()
+
+    # Step 3: Python packages
+    install_python_packages()
+
+    # Step 4: Ruff VS Code extension install
+    install_ruff_extension()
+
+    # Step 5: Test apps
+    test_streamlit()
+    test_jupyterlab()
+
+    print("\n🎉 Setup completed! You're ready to rock, Luna 🚀")
+
+if __name__ == "__main__":
+    main()
