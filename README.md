@@ -28,7 +28,7 @@ This Python script automates the setup of a complete development environment for
 1. Clone this repository:
 
    ```bash
-   git clone 
+   git clone https://github.com/VANISAIDEEPIKA/TechStackSOAI2025.git
    cd TechStackSOAI2025 
 
 2. Run the setup script:
