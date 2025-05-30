@@ -73,7 +73,7 @@ def test_jupyterlab():
     print("✅ JupyterLab launched in browser!")
 
 def main():
-    print("=== 🌟 Full Dev Setup Script - Summer of AI 2025 ===")
+    print("=== 🌟 TechStackSOAI2025 - Summer of AI 2025 ===")
 
     # Step 1: Environment checks
     check_git()
@@ -93,7 +93,7 @@ def main():
     test_streamlit()
     test_jupyterlab()
 
-    print("\n🎉 Setup completed! You're ready to rock, Luna 🚀")
+    print("\n🎉 Setup completed! You're ready to rock 🚀")
 
 if __name__ == "__main__":
     main()
